@@ -5,10 +5,7 @@
 
 	let params: string[] = [];
 
-	const CLIENT_ID: string = import.meta.env.VITE_CLIENT_ID?.toString();
-	const CLIENT_SECRET: string =
-		import.meta.env.VITE_CLIENT_SECRET?.toString();
-	const API_ENDPOINT: string = import.meta.env.VITE_API_ENDPOINT?.toString();
+	// const CLIENT_ID: string = import.meta.env.VITE_CLIENT_ID?.toString();
 
 	onMount(async () => {
 		const url = window.location.href;
@@ -18,20 +15,15 @@
 			const [paramName, parmaValue] = query.split('=');
 			params[paramName] = parmaValue;
 		});
-		const test = await fetch(API_ENDPOINT, {
-			method: 'POST',
+		fetch('https://discord.com/api/users/@me', {
 			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded',
+				authorization: `${params['tokenType']} ${params['accessToken']}`,
 			},
-			body: JSON.stringify({
-				client_id: CLIENT_ID,
-				client_secret: CLIENT_SECRET,
-				grant_type: 'authorization_code',
-				code: params['code'],
-				redirect_uri: redirect_uri,
-			}),
-		});
-		console.log(test);
+		})
+			.then((result) => console.log(result.json()))
+			.then((response) => {
+				console.log(response);
+			});
 	});
 </script>
 
