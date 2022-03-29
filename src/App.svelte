@@ -7,30 +7,34 @@
 
 	// const CLIENT_ID: string = import.meta.env.VITE_CLIENT_ID?.toString();
 
+	const test = (t1) => {
+		console.log(t1);
+	};
+
 	onMount(async () => {
 		const url = window.location.href;
-		const querys = url.split('?');
-		const redirect_uri = querys.shift();
+		const querys = url.split('#')[1].split('&');
 		querys.map((query) => {
 			const [paramName, parmaValue] = query.split('=');
 			params[paramName] = parmaValue;
 		});
 		fetch('https://discord.com/api/users/@me', {
 			headers: {
-				authorization: `${params['tokenType']} ${params['accessToken']}`,
+				authorization: `${params['token_type']} ${params['access_token']}`,
 			},
 		})
 			.then((result) => console.log(result.json()))
 			.then((response) => {
-				console.log(response);
-			});
+				test(response);
+			})
+			.catch(console.error);
 	});
 </script>
 
 <TailwindCss />
 
 <main class="container">
-	<p>{params['code']}</p>
+	<p>authorization: {params['token_type']} {params['access_token']}</p>
 </main>
 
 <style>
