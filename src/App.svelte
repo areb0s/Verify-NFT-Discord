@@ -1,46 +1,37 @@
 <script lang="ts">
-	import type { UserData } from './models';
 	import { onMount } from 'svelte';
+	import { getDiscordUser } from './lib/discord';
+	import { discordUser } from './lib/store';
+
+	import { walletConnect } from './lib/web3';
 
 	import Spinner from './components/Spinner.svelte';
 
 	import TailwindCss from './TailwindCSS.svelte';
 
-	let params: string[] = [];
-	let discordUser: UserData | undefined;
-
-	// const CLIENT_ID: string = import.meta.env.VITE_CLIENT_ID?.toString();
+	$: id = $discordUser?.id;
+	$: username = $discordUser?.username;
+	$: avatar = $discordUser?.avatar;
+	$: discriminator = $discordUser?.discriminator;
 
 	onMount(async () => {
-		const url = window.location.href;
-		const querys = url.split('#')[1].split('&');
-		querys.map((query) => {
-			const [paramName, parmaValue] = query.split('=');
-			params[paramName] = parmaValue;
-		});
-		fetch('https://discord.com/api/users/@me', {
-			headers: {
-				authorization: `${params['token_type']} ${params['access_token']} `,
-			},
-		})
-			.then((result) => result.json())
-			.then((response) => (discordUser = response))
-			.catch(console.error);
+		$discordUser = await getDiscordUser();
+		// await walletConnect;
 	});
 </script>
 
 <TailwindCss />
 
 <main class="container h-screen mx-auto grid text-white place-items-center">
-	{#if discordUser}
+	{#if $discordUser}
 		<div class="grid">
 			<img
 				class="mx-auto rounded-full"
-				src="https://cdn.discordapp.com/avatars/{discordUser?.id}/{discordUser?.avatar}.png"
-				alt={discordUser?.username}
+				src="https://cdn.discordapp.com/avatars/{id}/{avatar}.png"
+				alt={username}
 			/>
 			<p class="font-bold text-center">
-				{discordUser.username} #{discordUser.discriminator}
+				{username} #{discriminator}
 			</p>
 			<p class="text-5xl my-3">Welcome to NATI</p>
 			<button

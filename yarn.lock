@@ -3131,7 +3131,20 @@ svelte-preprocess@^4.0.0, svelte-preprocess@^4.9.8:
     sorcery "^0.10.0"
     strip-indent "^3.0.0"
 
-svelte@^3.44.0:
+svelte-proxied-store@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/svelte-proxied-store/-/svelte-proxied-store-1.1.3.tgz#21e8a6859791f1812ffcc31e2a68ef23a2c4d47f"
+  integrity sha512-1bzI4Ku1st1NkPIkKGB6i45zQ+lge6J/1Mc7SvmValyQxWfryZuFZktHCOGIcJDmrO/Z0uFDPd/67xHwLyBn6w==
+
+svelte-web3@^3.3.9:
+  version "3.3.9"
+  resolved "https://registry.yarnpkg.com/svelte-web3/-/svelte-web3-3.3.9.tgz#32900f25b642057809024afdfa736ab1a2a91847"
+  integrity sha512-0SMvJ0SoXJVAqQG6wXhEN74iXovRlCpCuejtFkYZBzxHllad/cJ0FcU9SwSrJu+1j6R0r0xeqrU434rR+9MfVA==
+  dependencies:
+    svelte "^3.0.0"
+    svelte-proxied-store "^1.1.3"
+
+svelte@^3.0.0, svelte@^3.44.0:
   version "3.46.4"
   resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.46.4.tgz#0c46bc4a3e20a2617a1b7dc43a722f9d6c084a38"
   integrity sha512-qKJzw6DpA33CIa+C/rGp4AUdSfii0DOTCzj/2YpSKKayw5WGSS624Et9L1nU1k2OVRS9vaENQXp2CVZNU+xvIg==
