@@ -17,5 +17,5 @@ export const getDiscordUser = async () => {
 	})
 		.then((result) => result.json())
 		.catch(console.error);
-	return response;
+	discordUser.set(response);
 };
