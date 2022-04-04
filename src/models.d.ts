@@ -12,3 +12,7 @@ export interface UserData {
 	public_flags: number;
 	username: string;
 }
+export interface Notification {
+	message: string;
+	type: string;
+}

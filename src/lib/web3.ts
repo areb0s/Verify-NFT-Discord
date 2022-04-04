@@ -7,14 +7,25 @@ import {
 	defaultEvmStores,
 } from 'svelte-web3';
 import contractABI from './NATInft.json';
-import { NATIContract } from './store';
+import { setNotification } from '../lib/notification';
+import { metamaskInstalled, NATIContract } from './store';
 import { get } from 'svelte/store';
 
 const CONTRACT_ADDRESS: string =
 	import.meta.env.VITE_CONTRACT_ADDRESS?.toString();
 
+export const detectMetamaskInstalled = () => {
+	const { ethereum } = window as any;
+	if (typeof ethereum !== 'undefined') {
+		metamaskInstalled.set(true);
+	}
+};
+
 export const walletConnect = async () => {
 	await defaultEvmStores.setProvider();
+	if (get(selectedAccount)) {
+		setNotification('Connected', 'success');
+	}
 };
 
 export const makeContract = () => {
@@ -35,7 +46,7 @@ export const verifyOwnership = async (): Promise<boolean> => {
 		.sign(data, SelectedAccount, null)
 		.catch((err) => {
 			console.error(err);
-			window.alert('서명에 실패하였습니다.');
+			setNotification('Verification Faild', 'error');
 		});
 	if (hash) {
 		const singedAddress = await Web3.eth.personal.ecRecover(
@@ -43,7 +54,8 @@ export const verifyOwnership = async (): Promise<boolean> => {
 			hash as string
 		);
 		const balance = await contract.methods.balanceOf(singedAddress).call();
-		return balance > 0 ? true : false;
+		if (balance !== 0) setNotification('Verification Success', 'success');
+		return balance === 0 ? false : true;
 	}
 	return false;
 };
